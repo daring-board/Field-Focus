@@ -28,14 +28,14 @@ export default function CourseDetails() {
     try {
       await deleteLesson.mutateAsync({ id: lessonId, courseId: id });
       toast({
-        title: "Lesson deleted",
-        description: "The lesson has been removed.",
+        title: "レッスンを削除しました",
+        description: "レッスンが削除されました。",
       });
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to delete lesson.",
+        title: "エラー",
+        description: "レッスンの削除に失敗しました。",
       });
     }
   };
@@ -56,9 +56,9 @@ export default function CourseDetails() {
     return (
       <Layout>
         <div className="flex flex-col items-center justify-center pt-20">
-          <h2 className="text-2xl font-bold">Course not found</h2>
+          <h2 className="text-2xl font-bold">コースが見つかりません</h2>
           <Link href="/">
-            <Button variant="link" className="mt-4">Back to Courses</Button>
+            <Button variant="link" className="mt-4">コース一覧に戻る</Button>
           </Link>
         </div>
       </Layout>
@@ -71,7 +71,7 @@ export default function CourseDetails() {
         <Link href="/">
           <Button variant="ghost" className="mb-6 gap-2 pl-0 hover:bg-transparent hover:text-primary">
             <ArrowLeft className="h-4 w-4" />
-            Back to courses
+            コース一覧に戻る
           </Button>
         </Link>
 
@@ -97,7 +97,7 @@ export default function CourseDetails() {
 
         {/* Lessons Section */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 font-display">Course Content</h2>
+          <h2 className="text-2xl font-bold text-slate-900 font-display">コース内容</h2>
           <CreateLessonDialog 
             courseId={id} 
             nextOrder={(lessons?.length || 0) + 1}
@@ -124,11 +124,11 @@ export default function CourseDetails() {
                       <div className="mt-1 flex items-center gap-4 text-xs font-medium text-slate-500">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5" />
-                          <span>{lesson.duration || 10} mins</span>
+                          <span>{lesson.duration || 10} 分</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Video className="h-3.5 w-3.5" />
-                          <span>Video Lesson</span>
+                          <span>ビデオレッスン</span>
                         </div>
                       </div>
                     </div>
@@ -152,7 +152,7 @@ export default function CourseDetails() {
           ) : (
             <div className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-500">
               <FileText className="mb-2 h-8 w-8 opacity-50" />
-              <p>No lessons added yet.</p>
+              <p>まだレッスンが追加されていません。</p>
             </div>
           )}
         </div>
@@ -197,16 +197,16 @@ function CreateLessonDialog({
     try {
       await createLesson.mutateAsync({ ...data, courseId });
       toast({
-        title: "Lesson added",
-        description: "Your new lesson has been added to the course.",
+        title: "レッスンを追加しました",
+        description: "新しいレッスンがコースに追加されました。",
       });
       form.reset();
       onOpenChange(false);
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to add lesson.",
+        title: "エラー",
+        description: "レッスンの追加に失敗しました。",
       });
     }
   };
@@ -216,12 +216,12 @@ function CreateLessonDialog({
       <DialogTrigger asChild>
         <Button className="gap-2">
           <Plus className="h-4 w-4" />
-          Add Lesson
+          レッスンを追加
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add New Lesson</DialogTitle>
+          <DialogTitle>新規レッスン作成</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
@@ -230,9 +230,9 @@ function CreateLessonDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Lesson Title</FormLabel>
+                  <FormLabel>レッスン名</FormLabel>
                   <FormControl>
-                    <Input placeholder="Introduction to the topic" {...field} />
+                    <Input placeholder="トピックの紹介" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -245,7 +245,7 @@ function CreateLessonDialog({
                 name="duration"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Duration (min)</FormLabel>
+                    <FormLabel>所要時間 (分)</FormLabel>
                     <FormControl>
                       <Input 
                         type="number" 
@@ -262,7 +262,7 @@ function CreateLessonDialog({
                 name="order"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Order</FormLabel>
+                    <FormLabel>順序</FormLabel>
                     <FormControl>
                       <Input 
                         type="number" 
@@ -281,10 +281,10 @@ function CreateLessonDialog({
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content / Summary</FormLabel>
+                  <FormLabel>内容 / 概要</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Brief summary or content of the lesson..." 
+                      placeholder="レッスンの簡単な概要または内容..." 
                       className="min-h-[100px] resize-none" 
                       {...field} 
                     />
@@ -297,7 +297,7 @@ function CreateLessonDialog({
             <div className="flex justify-end pt-2">
               <Button type="submit" disabled={createLesson.isPending}>
                 {createLesson.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Add Lesson
+                レッスンを追加
               </Button>
             </div>
           </form>

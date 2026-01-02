@@ -18,14 +18,14 @@ export default function CourseList() {
     try {
       await deleteCourse.mutateAsync(id);
       toast({
-        title: "Course deleted",
-        description: "The course has been successfully removed.",
+        title: "コースを削除しました",
+        description: "コースが正常に削除されました。",
       });
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to delete the course. Please try again.",
+        title: "エラー",
+        description: "コースの削除に失敗しました。もう一度お試しください。",
       });
     }
   };
@@ -46,13 +46,13 @@ export default function CourseList() {
     <Layout>
       <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 font-display">Explore Courses</h1>
-          <p className="mt-2 text-slate-600">Discover new skills and expand your knowledge.</p>
+          <h1 className="text-3xl font-bold text-slate-900 font-display">コースを探す</h1>
+          <p className="mt-2 text-slate-600">新しいスキルを発見し、知識を広げましょう。</p>
         </div>
         <Link href="/create">
           <Button size="lg" className="gap-2">
             <Plus className="h-5 w-5" />
-            Create New Course
+            新規コース作成
           </Button>
         </Link>
       </div>
@@ -91,11 +91,11 @@ export default function CourseList() {
                     <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
                       <div className="flex items-center gap-1">
                         <Book className="h-3.5 w-3.5" />
-                        <span>Modules</span>
+                        <span>モジュール</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="h-3.5 w-3.5" />
-                        <span>Self-paced</span>
+                        <span>マイペース</span>
                       </div>
                     </div>
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-colors group-hover:bg-primary group-hover:text-white">
@@ -112,12 +112,12 @@ export default function CourseList() {
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
             <Book className="h-8 w-8 text-slate-400" />
           </div>
-          <h3 className="mb-2 text-xl font-bold text-slate-900">No courses yet</h3>
+          <h3 className="mb-2 text-xl font-bold text-slate-900">コースがありません</h3>
           <p className="mb-8 max-w-sm text-slate-500">
-            Get started by creating your first course. Share your knowledge with the world.
+            最初のコースを作成して、あなたの知識を世界と共有しましょう。
           </p>
           <Link href="/create">
-            <Button size="lg">Create Course</Button>
+            <Button size="lg">コースを作成</Button>
           </Link>
         </div>
       )}

@@ -5,8 +5,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   const navItems = [
-    { href: "/", label: "Courses", icon: BookOpen },
-    { href: "/create", label: "Create Course", icon: LayoutGrid },
+    { href: "/", label: "コース一覧", icon: BookOpen },
+    { href: "/create", label: "コース作成", icon: LayoutGrid },
   ];
 
   return (

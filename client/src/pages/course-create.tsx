@@ -30,15 +30,15 @@ export default function CourseCreate() {
     try {
       await createCourse.mutateAsync(data);
       toast({
-        title: "Success!",
-        description: "Course created successfully.",
+        title: "成功！",
+        description: "コースが正常に作成されました。",
       });
       setLocation("/");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to create course. Please try again.",
+        title: "エラー",
+        description: "コースの作成に失敗しました。もう一度お試しください。",
       });
     }
   };
@@ -49,13 +49,13 @@ export default function CourseCreate() {
         <Link href="/">
           <Button variant="ghost" className="mb-8 gap-2 pl-0 hover:bg-transparent hover:text-primary">
             <ArrowLeft className="h-4 w-4" />
-            Back to courses
+            コース一覧に戻る
           </Button>
         </Link>
         
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 font-display">Create New Course</h1>
-          <p className="mt-2 text-slate-600">Fill in the details to publish your new course.</p>
+          <h1 className="text-3xl font-bold text-slate-900 font-display">新規コース作成</h1>
+          <p className="mt-2 text-slate-600">詳細を入力して新しいコースを公開しましょう。</p>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
@@ -66,9 +66,9 @@ export default function CourseCreate() {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Course Title</FormLabel>
+                    <FormLabel>コース名</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Advanced React Patterns" className="h-12 text-lg" {...field} />
+                      <Input placeholder="例：高度なReactパターン" className="h-12 text-lg" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -81,9 +81,9 @@ export default function CourseCreate() {
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>カテゴリー</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. Programming" {...field} />
+                        <Input placeholder="例：プログラミング" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -96,10 +96,10 @@ export default function CourseCreate() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>説明</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="What will students learn in this course?" 
+                        placeholder="このコースで学生は何を学びますか？" 
                         className="min-h-[150px] resize-none text-base" 
                         {...field} 
                       />
@@ -119,10 +119,10 @@ export default function CourseCreate() {
                   {createCourse.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating...
+                      作成中...
                     </>
                   ) : (
-                    "Create Course"
+                    "コースを作成"
                   )}
                 </Button>
               </div>
