@@ -1,45 +1,45 @@
-# EduFlow - Course Management System
+# EduFlow - コース管理システム
 
-EduFlow is a modern, streamlined platform designed for managing educational content. Whether for online learning or internal training, it provides an intuitive interface for creating courses and organizing lessons.
+EduFlowは、教育コンテンツを管理するためのモダンで合理化されたプラットフォームです。オンライン学習や社内研修など、コースの作成やレッスンの整理を直感的なインターフェースで行うことができます。
 
-## Features
+## 主な機能
 
-- **Course Management**: 
-  - Create new courses with titles, descriptions, and categories.
-  - View a dashboard of all available courses with vibrant, unique gradients.
-  - Delete courses that are no longer needed.
-- **Lesson Management**:
-  - Add multiple lessons to each course.
-  - Organize content with details like duration (in minutes) and lesson order.
-  - Easy lesson deletion and management within the course details view.
-- **Modern User Interface**:
-  - Clean, responsive design using Tailwind CSS and Radix UI.
-  - Smooth animations powered by Framer Motion.
-  - Intuitive navigation bar for quick access to course lists and creation tools.
-- **Robust Tech Stack**:
-  - **Frontend**: React with Vite, TanStack Query for state management, and Wouter for routing.
-  - **Backend**: Express server with a PostgreSQL database (Neon-backed).
-  - **Data Integrity**: Zod schema validation for both frontend forms and backend API routes.
+- **コース管理**: 
+  - タイトル、説明、カテゴリーを指定して新しいコースを作成。
+  - 鮮やかでユニークなグラデーションが施されたコース一覧ダッシュボード。
+  - 不要になったコースの削除。
+- **レッスン管理**:
+  - 各コースに複数のレッスンを追加。
+  - 所要時間（分単位）やレッスンの順序などの詳細を設定してコンテンツを整理。
+  - コース詳細画面から簡単にレッスンの削除や管理が可能。
+- **モダンなユーザーインターフェース**:
+  - Tailwind CSSとRadix UIを使用した、クリーンでレスポンシブなデザイン。
+  - Framer Motionによるスムーズなアニメーション。
+  - コース一覧や作成ツールへ素早くアクセスできる直感的なナビゲーションバー。
+- **堅牢な技術スタック**:
+  - **フロントエンド**: React (Vite)、状態管理にTanStack Query、ルーティングにWouterを採用。
+  - **バックエンド**: ExpressサーバーとPostgreSQLデータベース（Neon-backed）。
+  - **データ整合性**: フロントエンドのフォームとバックエンドのAPIルートの両方でZodスキーマバリデーションを使用。
 
-## Project Structure
+## プロジェクト構成
 
-- `client/src/`: React frontend application.
-  - `pages/`: Application views (Course List, Create, Details).
-  - `components/`: Reusable UI components.
-  - `hooks/`: Custom TanStack Query hooks for data fetching.
-- `server/`: Express backend.
-  - `routes.ts`: API endpoints for courses and lessons.
-  - `storage.ts`: Data persistence layer (PostgreSQL).
-- `shared/`: Shared TypeScript types and Zod schemas (`schema.ts`).
+- `client/src/`: Reactフロントエンドアプリケーション。
+  - `pages/`: アプリケーションのビュー（コース一覧、作成、詳細）。
+  - `components/`: 再利用可能なUIコンポーネント。
+  - `hooks/`: データ取得用のカスタムTanStack Queryフック。
+- `server/`: Expressバックエンド。
+  - `routes.ts`: コースとレッスンを管理するためのAPIエンドポイント。
+  - `storage.ts`: データ永続化レイヤー（PostgreSQL）。
+- `shared/`: 共有TypeScript型定義とZodスキーマ (`schema.ts`)。
 
-## Tech Stack
+## 技術スタック
 
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Shadcn UI, Framer Motion, TanStack Query, Wouter.
-- **Backend**: Node.js, Express, Drizzle ORM, PostgreSQL.
-- **Validation**: Zod.
+- **フロントエンド**: React, TypeScript, Vite, Tailwind CSS, Shadcn UI, Framer Motion, TanStack Query, Wouter.
+- **バックエンド**: Node.js, Express, Drizzle ORM, PostgreSQL.
+- **バリデーション**: Zod.
 
-## Getting Started
+## はじめに
 
-1. The application starts automatically in the Replit environment.
-2. The frontend is served on port 5000.
-3. Use the "Start application" workflow to run the development server.
+1. アプリケーションはReplit環境で自動的に起動します。
+2. フロントエンドはポート5000で提供されます。
+3. 「Start application」ワークフローを使用して開発サーバーを実行します。
