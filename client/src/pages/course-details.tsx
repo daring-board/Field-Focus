@@ -98,20 +98,12 @@ export default function CourseDetails() {
         {/* Lessons Section */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-slate-900 font-display">コース内容</h2>
-          <div className="flex gap-2">
-            <Link href={`/course/${id}/lesson/new`}>
-              <Button className="gap-2" data-testid="button-create-lesson-editor">
-                <Plus className="h-4 w-4" />
-                エディタで作成
-              </Button>
-            </Link>
-            <CreateLessonDialog 
-              courseId={id} 
-              nextOrder={(lessons?.length || 0) + 1}
-              open={isDialogOpen}
-              onOpenChange={setIsDialogOpen}
-            />
-          </div>
+          <CreateLessonDialog 
+            courseId={id} 
+            nextOrder={(lessons?.length || 0) + 1}
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+          />
         </div>
 
         <div className="space-y-4">
