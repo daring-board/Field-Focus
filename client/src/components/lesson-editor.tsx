@@ -98,7 +98,8 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                         <Input 
                           type="number" 
                           {...field} 
-                          onChange={(e) => field.onChange(parseInt(e.target.value))} 
+                          value={field.value ?? 0}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)} 
                           data-testid="input-lesson-duration" 
                         />
                       </FormControl>

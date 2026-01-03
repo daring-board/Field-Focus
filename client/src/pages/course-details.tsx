@@ -258,7 +258,8 @@ function CreateLessonDialog({
                       <Input 
                         type="number" 
                         {...field} 
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        value={field.value ?? 0}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -275,7 +276,8 @@ function CreateLessonDialog({
                       <Input 
                         type="number" 
                         {...field} 
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        value={field.value ?? 0}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
