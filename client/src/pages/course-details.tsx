@@ -3,6 +3,7 @@ import { Link, useRoute } from "wouter";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerFooter, DrawerClose } from "@/components/ui/drawer";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertLessonSchema, type InsertLesson } from "@shared/schema";
 import { ArrowLeft, Clock, PlayCircle, Plus, Trash2, Video, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useMobile } from "@/hooks/use-mobile";
 
 export default function CourseDetails() {
   const [, params] = useRoute("/course/:id");
@@ -172,6 +174,7 @@ function CreateLessonDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const isMobile = useMobile();
   const { toast } = useToast();
   const createLesson = useCreateLesson();
 
@@ -185,7 +188,6 @@ function CreateLessonDialog({
     },
   });
 
-  // Update order when dialog opens
   const handleOpenChange = (newOpen: boolean) => {
     if (newOpen) {
       form.setValue("order", nextOrder);
@@ -211,6 +213,116 @@ function CreateLessonDialog({
     }
   };
 
+  const FormContent = (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>レッスン名</FormLabel>
+              <FormControl>
+                <Input placeholder="トピックの紹介" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="duration"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>所要時間 (分)</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="number" 
+                    {...field} 
+                    value={field.value ?? 0}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="order"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>順序</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="number" 
+                    {...field} 
+                    value={field.value ?? 0}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>内容 / 概要</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="レッスンの簡単な概要または内容..." 
+                  className="min-h-[100px] resize-none" 
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex justify-end pt-2">
+          <Button type="submit" disabled={createLesson.isPending} className="w-full sm:w-auto">
+            {createLesson.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            レッスンを追加
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            レッスンを追加
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="mx-auto w-full max-w-sm px-4 pb-8">
+            <DrawerHeader>
+              <DrawerTitle>新規レッスン作成</DrawerTitle>
+            </DrawerHeader>
+            {FormContent}
+            <DrawerFooter className="px-0 pt-4">
+              <DrawerClose asChild>
+                <Button variant="outline">キャンセル</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -223,87 +335,7 @@ function CreateLessonDialog({
         <DialogHeader>
           <DialogTitle>新規レッスン作成</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>レッスン名</FormLabel>
-                  <FormControl>
-                    <Input placeholder="トピックの紹介" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>所要時間 (分)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        {...field} 
-                        value={field.value ?? 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="order"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>順序</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        {...field} 
-                        value={field.value ?? 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>内容 / 概要</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="レッスンの簡単な概要または内容..." 
-                      className="min-h-[100px] resize-none" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex justify-end pt-2">
-              <Button type="submit" disabled={createLesson.isPending}>
-                {createLesson.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                レッスンを追加
-              </Button>
-            </div>
-          </form>
-        </Form>
+        {FormContent}
       </DialogContent>
     </Dialog>
   );
