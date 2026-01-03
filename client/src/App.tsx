@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import CourseList from "@/pages/course-list";
 import CourseCreate from "@/pages/course-create";
 import CourseDetails from "@/pages/course-details";
+import LessonCreate from "@/pages/lesson-create";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={CourseList} />
       <Route path="/create" component={CourseCreate} />
       <Route path="/course/:id" component={CourseDetails} />
+      <Route path="/course/:id/lesson/new" component={LessonCreate} />
       <Route component={NotFound} />
     </Switch>
   );
