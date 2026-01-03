@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertLessonSchema, type InsertLesson } from "@shared/schema";
 import { ArrowLeft, Clock, PlayCircle, Plus, Trash2, Video, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function CourseDetails() {
   const [, params] = useRoute("/course/:id");
@@ -174,7 +174,7 @@ function CreateLessonDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const { toast } = useToast();
   const createLesson = useCreateLesson();
 
