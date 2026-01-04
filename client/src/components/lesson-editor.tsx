@@ -122,13 +122,13 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="text" className="flex items-center gap-2">
+                          <SelectItem value="text">
                             <div className="flex items-center gap-2">
                               <FileText className="h-4 w-4" />
                               <span>テキスト</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="video" className="flex items-center gap-2">
+                          <SelectItem value="video">
                             <div className="flex items-center gap-2">
                               <Video className="h-4 w-4" />
                               <span>ビデオ</span>
