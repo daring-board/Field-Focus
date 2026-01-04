@@ -60,11 +60,8 @@ export async function registerRoutes(
 
   app.post(api.lessons.create.path, async (req, res) => {
     try {
-      console.log("Creating lesson. Body:", req.body, "Params:", req.params);
-      const input = api.lessons.create.input.parse({
-        ...req.body,
-        type: req.body.type || 'text'
-      });
+      console.log("Creating lesson. Raw body:", req.body);
+      const input = api.lessons.create.input.parse(req.body);
       
       const lesson = await storage.createLesson({
         ...input,
