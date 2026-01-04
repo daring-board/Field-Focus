@@ -107,6 +107,7 @@ async function seedDatabase() {
     await storage.createLesson({
       courseId: course.id,
       title: "HTML Basics",
+      type: "text",
       content: "HTML stands for HyperText Markup Language...",
       order: 1,
       duration: 10,
@@ -115,6 +116,7 @@ async function seedDatabase() {
     await storage.createLesson({
       courseId: course.id,
       title: "CSS Styling",
+      type: "text",
       content: "CSS allows you to style your HTML pages...",
       order: 2,
       duration: 15,
@@ -129,6 +131,7 @@ async function seedDatabase() {
      await storage.createLesson({
       courseId: mathCourse.id,
       title: "Limits",
+      type: "text",
       content: "Introduction to the concept of a limit...",
       order: 1,
       duration: 45,
