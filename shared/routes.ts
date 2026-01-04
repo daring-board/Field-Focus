@@ -67,6 +67,14 @@ export const api = {
         400: errorSchemas.validation,
       },
     },
+    get: {
+      method: 'GET' as const,
+      path: '/api/lessons/:id',
+      responses: {
+        200: z.custom<typeof lessons.$inferSelect>(),
+        404: errorSchemas.notFound,
+      },
+    },
     delete: {
       method: 'DELETE' as const,
       path: '/api/lessons/:id',

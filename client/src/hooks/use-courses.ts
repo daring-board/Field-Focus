@@ -93,7 +93,8 @@ export function useLesson(id: number) {
       const res = await fetch(url, { credentials: "include" });
       if (res.status === 404) return null;
       if (!res.ok) throw new Error("Failed to fetch lesson");
-      return api.lessons.get.responses[200].parse(await res.json());
+      const json = await res.json();
+      return api.lessons.get.responses[200].parse(json);
     },
     enabled: !!id,
   });

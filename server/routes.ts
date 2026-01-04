@@ -50,6 +50,14 @@ export async function registerRoutes(
     res.json(lessons);
   });
 
+  app.get(api.lessons.get.path, async (req, res) => {
+    const lesson = await storage.getLesson(Number(req.params.id));
+    if (!lesson) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
+    res.json(lesson);
+  });
+
   app.post(api.lessons.create.path, async (req, res) => {
     try {
       const bodySchema = api.lessons.create.input.extend({
