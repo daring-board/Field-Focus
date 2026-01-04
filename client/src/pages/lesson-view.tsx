@@ -63,18 +63,40 @@ export default function LessonView() {
           <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">{lesson.title}</h1>
         </div>
 
-        <Card className="mb-8 overflow-hidden border-none bg-slate-900 shadow-2xl">
-          <div className="aspect-video relative flex items-center justify-center bg-slate-800">
-            <PlayCircle className="h-20 w-20 text-white/50" />
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white/80 text-sm">
+        {lesson.type === "video" && lesson.videoUrl ? (
+          <Card className="mb-8 overflow-hidden border-none bg-slate-900 shadow-2xl">
+            <div className="aspect-video relative flex items-center justify-center bg-slate-800">
+              <iframe
+                src={lesson.videoUrl.replace("watch?v=", "embed/")}
+                className="absolute inset-0 w-full h-full"
+                allowFullScreen
+              />
+            </div>
+            <div className="p-4 flex items-center justify-between text-white/80 text-sm bg-slate-900">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 <span>{lesson.duration || 10} 分</span>
               </div>
-              <span>ビデオプレイヤー プレースホルダー</span>
+              <div className="flex items-center gap-2 text-primary">
+                <PlayCircle className="h-4 w-4" />
+                <span>ビデオレッスン</span>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : (
+          <Card className="mb-8 overflow-hidden border-none bg-slate-100 shadow-sm">
+            <div className="p-6 flex items-center justify-between text-slate-600 text-sm">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>{lesson.duration || 10} 分</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4" />
+                <span>テキストレッスン</span>
+              </div>
+            </div>
+          </Card>
+        )}
 
         <div className="prose prose-slate max-w-none">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">レッスンの内容</h2>

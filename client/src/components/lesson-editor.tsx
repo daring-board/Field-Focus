@@ -9,8 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCreateLesson } from "@/hooks/use-courses";
 import { useLocation } from "wouter";
-import { Loader2, Eye, PenLine } from "lucide-react";
+import { Loader2, Eye, PenLine, Video, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface LessonEditorProps {
   courseId: number;
@@ -28,7 +29,9 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
     defaultValues: {
       courseId,
       title: initialData?.title || "",
+      type: initialData?.type || "text",
       content: initialData?.content || "",
+      videoUrl: initialData?.videoUrl || "",
       order: initialData?.order || 1,
       duration: initialData?.duration || 10,
     },
@@ -38,13 +41,15 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
     try {
       await createLesson.mutateAsync({ ...data, courseId });
       if (onSuccess) onSuccess();
-      setLocation(`/courses/${courseId}`);
+      setLocation(`/course/${courseId}`);
     } catch (error) {
       console.error(error);
     }
   };
 
   const content = form.watch("content");
+  const lessonType = form.watch("type");
+  const videoUrl = form.watch("videoUrl");
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -69,6 +74,15 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
         {previewMode ? (
           <div className="prose dark:prose-invert max-w-none min-h-[400px] border rounded-md p-6 bg-muted/20">
             <h1 data-testid="text-preview-title">{form.watch("title") || "タイトルなし"}</h1>
+            {lessonType === "video" && videoUrl && (
+              <div className="aspect-video mb-6 bg-black rounded-lg flex items-center justify-center text-white overflow-hidden">
+                <iframe
+                  src={videoUrl.replace("watch?v=", "embed/")}
+                  className="w-full h-full"
+                  allowFullScreen
+                />
+              </div>
+            )}
             <div className="whitespace-pre-wrap">{content || "コンテンツがありません"}</div>
           </div>
         ) : (
@@ -90,6 +104,40 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                 />
                 <FormField
                   control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>レッスン形式</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger data-testid="select-lesson-type">
+                            <SelectValue placeholder="形式を選択" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="text" className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
+                              <FileText className="h-4 w-4" />
+                              <span>テキスト</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="video" className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
+                              <Video className="h-4 w-4" />
+                              <span>ビデオ</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
@@ -107,6 +155,26 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                     </FormItem>
                   )}
                 />
+                {lessonType === "video" && (
+                  <FormField
+                    control={form.control}
+                    name="videoUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ビデオURL (YouTube等)</FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="https://www.youtube.com/watch?v=..." 
+                            {...field} 
+                            value={field.value ?? ""}
+                            data-testid="input-lesson-video-url" 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
 
               <FormField
@@ -114,12 +182,13 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                 name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>コンテンツ</FormLabel>
+                    <FormLabel>{lessonType === "video" ? "ビデオの説明" : "コンテンツ"}</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="レッスンの内容を記述してください..." 
-                        className="min-h-[400px] resize-none" 
+                        placeholder={lessonType === "video" ? "ビデオの内容について説明してください..." : "レッスンの内容を記述してください..."} 
+                        className="min-h-[300px] resize-none" 
                         {...field} 
+                        value={field.value ?? ""}
                         data-testid="textarea-lesson-content"
                       />
                     </FormControl>
@@ -132,7 +201,7 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
                 <Button 
                   type="button" 
                   variant="outline" 
-                  onClick={() => setLocation(`/courses/${courseId}`)}
+                  onClick={() => setLocation(`/course/${courseId}`)}
                   data-testid="button-cancel"
                 >
                   キャンセル

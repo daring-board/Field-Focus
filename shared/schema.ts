@@ -15,7 +15,9 @@ export const lessons = pgTable("lessons", {
   id: serial("id").primaryKey(),
   courseId: integer("course_id").notNull(),
   title: text("title").notNull(),
-  content: text("content").notNull(),
+  type: text("type").default("text").notNull(), // 'text' or 'video'
+  content: text("content"), // Text content or video description
+  videoUrl: text("video_url"),
   order: integer("order").notNull(),
   duration: integer("duration"), // Duration in minutes
   createdAt: timestamp("created_at").defaultNow(),
