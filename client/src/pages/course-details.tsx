@@ -135,14 +135,22 @@ export default function CourseDetails() {
                       </div>
                     </div>
                     
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-slate-400 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10"
-                      onClick={() => handleDeleteLesson(lesson.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/course/${id}/lesson/${lesson.id}`}>
+                        <Button size="sm" className="gap-2">
+                          <PlayCircle className="h-4 w-4" />
+                          開始
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-slate-400 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10"
+                        onClick={() => handleDeleteLesson(lesson.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   
                   <p className="mt-3 text-slate-600 text-sm leading-relaxed">
