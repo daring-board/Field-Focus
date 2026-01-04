@@ -220,7 +220,14 @@ function CreateLessonDialog({
 
   const onSubmit = async (data: Omit<InsertLesson, "courseId">) => {
     try {
-      await createLesson.mutateAsync({ ...data, courseId });
+      // Ensure data has the correct fields before sending
+      const payload = {
+        ...data,
+        courseId,
+        type: data.type || "text",
+        videoUrl: data.type === "video" ? data.videoUrl : null
+      };
+      await createLesson.mutateAsync(payload);
       toast({
         title: "レッスンを追加しました",
         description: "新しいレッスンがコースに追加されました。",

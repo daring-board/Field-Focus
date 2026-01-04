@@ -39,7 +39,13 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
 
   const onSubmit = async (data: InsertLesson) => {
     try {
-      await createLesson.mutateAsync({ ...data, courseId });
+      const payload = {
+        ...data,
+        courseId,
+        type: data.type || "text",
+        videoUrl: data.type === "video" ? data.videoUrl : null
+      };
+      await createLesson.mutateAsync(payload);
       if (onSuccess) onSuccess();
       setLocation(`/course/${courseId}`);
     } catch (error) {
