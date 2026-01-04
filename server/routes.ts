@@ -60,24 +60,13 @@ export async function registerRoutes(
 
   app.post(api.lessons.create.path, async (req, res) => {
     try {
-      const bodySchema = api.lessons.create.input.extend({
-        // Ensure courseId from URL is used or validated if passed in body (here we inject it)
-        courseId: z.number().optional(), 
-      });
-      // We actually need to combine the body with the courseId from the params
-      const inputData = {
-        ...req.body,
-        courseId: Number(req.params.courseId)
-      };
-      
-      // But wait, the shared route input schema OMITTED courseId.
-      // So we need to re-add it for storage creation.
-      
       const input = api.lessons.create.input.parse(req.body);
       
       const lesson = await storage.createLesson({
         ...input,
-        courseId: Number(req.params.courseId)
+        courseId: Number(req.params.courseId),
+        // Ensure type defaults to 'text' if not provided
+        type: input.type || 'text'
       });
       
       res.status(201).json(lesson);
