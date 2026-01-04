@@ -44,6 +44,31 @@ export default function LessonView() {
     );
   }
 
+  const getVideoEmbedUrl = (url: string) => {
+    if (!url) return "";
+    
+    // YouTube
+    if (url.includes("youtube.com/watch?v=")) {
+      return url.replace("watch?v=", "embed/");
+    }
+    if (url.includes("youtu.be/")) {
+      const id = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    if (url.includes("youtube.com/playlist?list=")) {
+      const listId = url.split("list=")[1]?.split(/[&#]/)[0];
+      return `https://www.youtube.com/embed/videoseries?list=${listId}`;
+    }
+
+    // Vimeo
+    if (url.includes("vimeo.com/")) {
+      const id = url.split("vimeo.com/")[1]?.split(/[?#]/)[0];
+      return `https://player.vimeo.com/video/${id}`;
+    }
+
+    return url;
+  };
+
   return (
     <Layout>
       <div className="mx-auto max-w-4xl pb-12">
@@ -67,9 +92,10 @@ export default function LessonView() {
           <Card className="mb-8 overflow-hidden border-none bg-slate-900 shadow-2xl">
             <div className="aspect-video relative flex items-center justify-center bg-slate-800">
               <iframe
-                src={lesson.videoUrl.replace("watch?v=", "embed/")}
+                src={getVideoEmbedUrl(lesson.videoUrl)}
                 className="absolute inset-0 w-full h-full"
                 allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             </div>
             <div className="p-4 flex items-center justify-between text-white/80 text-sm bg-slate-900">

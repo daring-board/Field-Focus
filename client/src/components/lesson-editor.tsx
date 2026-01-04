@@ -58,6 +58,31 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
   const lessonType = form.watch("type");
   const videoUrl = form.watch("videoUrl");
 
+  const getVideoEmbedUrl = (url: string) => {
+    if (!url) return "";
+    
+    // YouTube
+    if (url.includes("youtube.com/watch?v=")) {
+      return url.replace("watch?v=", "embed/");
+    }
+    if (url.includes("youtu.be/")) {
+      const id = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    if (url.includes("youtube.com/playlist?list=")) {
+      const listId = url.split("list=")[1]?.split(/[&#]/)[0];
+      return `https://www.youtube.com/embed/videoseries?list=${listId}`;
+    }
+
+    // Vimeo
+    if (url.includes("vimeo.com/")) {
+      const id = url.split("vimeo.com/")[1]?.split(/[?#]/)[0];
+      return `https://player.vimeo.com/video/${id}`;
+    }
+
+    return url;
+  };
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -84,9 +109,10 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
             {lessonType === "video" && videoUrl && (
               <div className="aspect-video mb-6 bg-black rounded-lg flex items-center justify-center text-white overflow-hidden">
                 <iframe
-                  src={videoUrl.replace("watch?v=", "embed/")}
+                  src={getVideoEmbedUrl(videoUrl)}
                   className="w-full h-full"
                   allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 />
               </div>
             )}
