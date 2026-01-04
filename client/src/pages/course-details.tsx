@@ -15,6 +15,8 @@ import { ArrowLeft, Clock, PlayCircle, Plus, Trash2, Video, FileText, Loader2 } 
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 export default function CourseDetails() {
   const [, params] = useRoute("/course/:id");
   const id = params ? parseInt(params.id) : 0;
@@ -129,8 +131,17 @@ export default function CourseDetails() {
                           <span>{lesson.duration || 10} 分</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Video className="h-3.5 w-3.5" />
-                          <span>ビデオレッスン</span>
+                          {lesson.type === "video" ? (
+                            <>
+                              <Video className="h-3.5 w-3.5" />
+                              <span>ビデオレッスン</span>
+                            </>
+                          ) : (
+                            <>
+                              <FileText className="h-3.5 w-3.5" />
+                              <span>テキストレッスン</span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -190,7 +201,9 @@ function CreateLessonDialog({
     resolver: zodResolver(insertLessonSchema.omit({ courseId: true })),
     defaultValues: {
       title: "",
+      type: "text",
       content: "",
+      videoUrl: "",
       duration: 15,
       order: nextOrder,
     },
@@ -202,6 +215,8 @@ function CreateLessonDialog({
     }
     onOpenChange(newOpen);
   };
+
+  const lessonType = form.watch("type");
 
   const onSubmit = async (data: Omit<InsertLesson, "courseId">) => {
     try {
@@ -224,19 +239,42 @@ function CreateLessonDialog({
   const FormContent = (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>レッスン名</FormLabel>
-              <FormControl>
-                <Input placeholder="トピックの紹介" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>レッスン名</FormLabel>
+                <FormControl>
+                  <Input placeholder="トピックの紹介" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>形式</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="選択" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="text">テキスト</SelectItem>
+                    <SelectItem value="video">ビデオ</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         
         <div className="grid grid-cols-2 gap-4">
           <FormField
@@ -277,17 +315,38 @@ function CreateLessonDialog({
           />
         </div>
 
+        {lessonType === "video" && (
+          <FormField
+            control={form.control}
+            name="videoUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ビデオURL</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="https://..." 
+                    {...field} 
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>内容 / 概要</FormLabel>
+              <FormLabel>{lessonType === "video" ? "ビデオの説明" : "内容 / 概要"}</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="レッスンの簡単な概要または内容..." 
+                  placeholder="詳細を入力..." 
                   className="min-h-[100px] resize-none" 
                   {...field} 
+                  value={field.value ?? ""}
                 />
               </FormControl>
               <FormMessage />
