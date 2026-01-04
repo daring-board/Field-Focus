@@ -85,6 +85,20 @@ export function useLessons(courseId: number) {
   });
 }
 
+export function useLesson(id: number) {
+  return useQuery({
+    queryKey: [api.lessons.get.path, id],
+    queryFn: async () => {
+      const url = buildUrl(api.lessons.get.path, { id });
+      const res = await fetch(url, { credentials: "include" });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error("Failed to fetch lesson");
+      return api.lessons.get.responses[200].parse(await res.json());
+    },
+    enabled: !!id,
+  });
+}
+
 export function useCreateLesson() {
   const queryClient = useQueryClient();
   return useMutation({
