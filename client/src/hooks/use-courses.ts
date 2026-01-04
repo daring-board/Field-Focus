@@ -105,15 +105,13 @@ export function useCreateLesson() {
   return useMutation({
     mutationFn: async ({ courseId, ...data }: InsertLesson & { courseId: number }) => {
       const url = buildUrl(api.lessons.create.path, { courseId });
-      // Remove courseId from payload as it's in the URL/handled by backend logic mostly, 
-      // but schema expects order/title/content/duration. 
-      // The endpoint input schema omits courseId, so we shouldn't send it in body if strictly typed,
-      // but let's just send the matching body.
       const payload = {
         title: data.title,
         content: data.content,
         order: data.order,
-        duration: data.duration
+        duration: data.duration,
+        type: data.type,
+        videoUrl: data.videoUrl
       };
       
       const res = await fetch(url, {

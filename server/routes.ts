@@ -69,7 +69,7 @@ export async function registerRoutes(
       const lesson = await storage.createLesson({
         ...input,
         courseId: Number(req.params.courseId),
-        type: input.type,
+        type: input.type || 'text',
         videoUrl: input.videoUrl || null
       });
       
