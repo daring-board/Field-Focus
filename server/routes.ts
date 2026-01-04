@@ -65,8 +65,8 @@ export async function registerRoutes(
       const lesson = await storage.createLesson({
         ...input,
         courseId: Number(req.params.courseId),
-        // Ensure type defaults to 'text' if not provided
-        type: input.type || 'text'
+        type: input.type || 'text',
+        videoUrl: input.videoUrl || null
       });
       
       res.status(201).json(lesson);
