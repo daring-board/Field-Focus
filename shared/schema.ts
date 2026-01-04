@@ -15,7 +15,7 @@ export const lessons = pgTable("lessons", {
   id: serial("id").primaryKey(),
   courseId: integer("course_id").notNull(),
   title: text("title").notNull(),
-  type: text("type").default("text").notNull(), // 'text' or 'video'
+  type: text("type").notNull(), // 'text' or 'video'
   content: text("content"), // Text content or video description
   videoUrl: text("video_url"),
   order: integer("order").notNull(),

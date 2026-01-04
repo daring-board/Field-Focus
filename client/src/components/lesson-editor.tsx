@@ -45,6 +45,7 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
         type: data.type || "text",
         videoUrl: data.type === "video" ? data.videoUrl : null
       };
+      console.log("Submitting lesson data:", payload);
       await createLesson.mutateAsync(payload);
       if (onSuccess) onSuccess();
       setLocation(`/course/${courseId}`);
