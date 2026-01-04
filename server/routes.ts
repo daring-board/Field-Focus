@@ -60,6 +60,7 @@ export async function registerRoutes(
 
   app.post(api.lessons.create.path, async (req, res) => {
     try {
+      console.log("Creating lesson. Body:", req.body, "Params:", req.params);
       const input = api.lessons.create.input.parse(req.body);
       
       const lesson = await storage.createLesson({
@@ -71,13 +72,14 @@ export async function registerRoutes(
       
       res.status(201).json(lesson);
     } catch (err) {
+      console.error("Error creating lesson:", err);
       if (err instanceof z.ZodError) {
         return res.status(400).json({
           message: err.errors[0].message,
           field: err.errors[0].path.join('.'),
         });
       }
-      throw err;
+      res.status(500).json({ message: "Internal server error" });
     }
   });
 
