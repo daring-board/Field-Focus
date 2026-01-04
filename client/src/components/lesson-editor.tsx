@@ -42,7 +42,7 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
       const payload = {
         ...data,
         courseId,
-        type: data.type,
+        type: data.type || "text",
         videoUrl: data.type === "video" ? (data.videoUrl || "") : ""
       };
       console.log("Submitting lesson data:", payload);
