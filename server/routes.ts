@@ -61,12 +61,15 @@ export async function registerRoutes(
   app.post(api.lessons.create.path, async (req, res) => {
     try {
       console.log("Creating lesson. Body:", req.body, "Params:", req.params);
-      const input = api.lessons.create.input.parse(req.body);
+      const input = api.lessons.create.input.parse({
+        ...req.body,
+        type: req.body.type || 'text'
+      });
       
       const lesson = await storage.createLesson({
         ...input,
         courseId: Number(req.params.courseId),
-        type: input.type || 'text',
+        type: input.type,
         videoUrl: input.videoUrl || null
       });
       

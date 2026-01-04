@@ -43,7 +43,7 @@ export function LessonEditor({ courseId, initialData, onSuccess }: LessonEditorP
         ...data,
         courseId,
         type: data.type || "text",
-        videoUrl: data.type === "video" ? (data.videoUrl || "") : (data.type === "text" ? "" : null)
+        videoUrl: data.type === "video" ? (data.videoUrl || "") : ""
       };
       console.log("Submitting lesson data:", payload);
       await createLesson.mutateAsync(payload);
